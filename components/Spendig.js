@@ -1,9 +1,10 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, ImageStore } from 'react-native'
 import React from 'react'
 
-import {COLORS, SIZES, SHADOWS, assets} from "../constants"
+import {COLORS, SIZES, SHADOWS, assets, FONTS} from "../constants"
 import { useNavigation } from '@react-navigation/native'
 import { CircleButton } from './Button'
+import { CURRENCY_TYPES } from '../constants/currencies'
 
 const Spendig = ({data}) => {
     const navigation = useNavigation()
@@ -19,17 +20,33 @@ const Spendig = ({data}) => {
         }}
     >
         <View style={{ width:"100%", height: 50}}>
-            <Image 
-                source={data.Image} 
-                resizeMode="cover"
+            <View
                 style={{
-                    width:"100%",
-                    height:"100%",
-                    borderTopLeftRadius: SIZES.font,
-                    borderTopRightRadius: SIZES.font
+                    width: 30,
+                    height: 30,
+                    backgroundColor: COLORS.white,
+                    position:"absolute",
+                    borderRadius: SIZES.extraLarge,
+                    alignItems:"center",
+                    justifyContent:"center",
+                    ...SHADOWS.light,
+                    left:10,
+                    top:10
                 }}
-            />
-            <CircleButton imgUrl={assets.heart} rightStyle={10} topStyle={10}/>
+            >
+                <Image source={assets.person01} resizeMode="contain" style={{width:26, height:26}}/>
+            </View>
+            <Text
+                style={{
+                    fontFamily: FONTS.regular,
+                    fontSize: SIZES.medium,
+                    color: COLORS.white,
+                    top:"25%",
+                    left:50,
+                }}
+            >
+              {CURRENCY_TYPES[data.currency]} {data.money}
+            </Text>
         </View>
     </View>
   )

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { View, SafeArea, FlatList, Text, ImageBackground } from 'react-native'
+import { View, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { FocusStatusBar, Header, Spendig, TotalSpending } from '../components'
-import {COLORS, NFTData} from "../constants"
+import { FocusStatusBar, Header, Spendig } from '../components'
+import {COLORS, SpendingData} from "../constants"
 
 
 const Home = () => {
@@ -15,11 +15,11 @@ const Home = () => {
         
           <View style={{zIndex: 0}}>
             <FlatList 
-              data={NFTData}
+              data={SpendingData}
               renderItem={({item}) => <Spendig data={item}/>}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
-              ListHeaderComponent={<Header />}
+              ListHeaderComponent={<Header data={SpendingData}/>}
             />
           </View>
         <View 

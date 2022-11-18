@@ -26,7 +26,9 @@ const TotalSpending = ({totalMoney}) => {
                     top:15,
                     left:60,
                 }}
-            >₺ {totalMoney}</Text>
+            >
+                ₺ {totalMoney.toFixed(2)}
+            </Text>
             {/* <Image 
                 source={data.Image} 
                 resizeMode="cover"
