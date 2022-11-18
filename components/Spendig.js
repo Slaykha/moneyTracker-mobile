@@ -1,4 +1,4 @@
-import { View, Text, Image, ImageStore } from 'react-native'
+import { View, Text, Image, ImageStore, Button } from 'react-native'
 import React from 'react'
 
 import {COLORS, SIZES, SHADOWS, assets, FONTS} from "../constants"
@@ -44,6 +44,8 @@ const Spendig = ({data}) => {
                     top:"25%",
                     left:50,
                 }}
+                onPress={() => navigation.navigate("AddSpending")}
+
             >
               {CURRENCY_TYPES[data.currency]} {data.money}
             </Text>

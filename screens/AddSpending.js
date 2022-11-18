@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text } from 'react-native'
 
-const Details = () => {
+const AddSpending = () => {
   return (
     <Text>Details</Text>
   )
 }
 
-export default Details
+export default AddSpending
