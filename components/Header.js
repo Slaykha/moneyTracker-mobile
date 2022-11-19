@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { View, Text, Image, ImageBackground } from 'react-native'
-import { COLORS, FONTS, SIZES } from '../constants'
+import { assets, COLORS, FONTS, SIZES } from '../constants'
 import { CURRENCY_VALUE } from '../constants/currencies'
 import TotalSpending from './TotalSpending'
 
@@ -9,7 +9,9 @@ const Header = ({data}) => {
   const [totalMoney, setTotalMoney] = useState(0)
 
   const getTotalMoney = () => {
-    data.map((spending) => setTotalMoney(totalMoney + (spending.money * CURRENCY_VALUE[spending.currency])))
+    var tempTotal = 0 
+    data.map((spending) => tempTotal = tempTotal + (spending.money * CURRENCY_VALUE[spending.currency]))
+    setTotalMoney(tempTotal)
   }
 
   useEffect(() => {
@@ -18,7 +20,7 @@ const Header = ({data}) => {
   
   return (
     <ImageBackground
-      source={{uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvZvfb5VvHYMO-O0bE3_396-0zlaiNwsyhhA&usqp=CAU"}} 
+      source={assets.background} 
       resizeMode="cover"  
     >
       <View 

@@ -1,21 +1,24 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
-import { COLORS, SHADOWS, SIZES } from '../constants'
+import { COLORS, FONTS, SHADOWS, SIZES } from '../constants'
 
 export const CircleButton = (props) => {
     const{
         imgUrl,
         handlePress,
         rightStyle,
-        topStyle
+        topStyle,
+        size,
+        color,
+        imageSize = 24
     } = props
 
   return (
     <TouchableOpacity
         style={{
-            width: 30,
-            height: 30,
-            backgroundColor: COLORS.white,
+            width: size,
+            height: size,
+            backgroundColor: color,
             position:"absolute",
             borderRadius: SIZES.extraLarge,
             alignItems:"center",
@@ -26,7 +29,48 @@ export const CircleButton = (props) => {
         }}
         onPress={handlePress}
     >
-        <Image source={imgUrl} resizeMode="contain" style={{width:24, height:24}}/>
+        <Image source={imgUrl} resizeMode="contain" style={{width:imageSize, height:imageSize}}/>
+    </TouchableOpacity>
+  )
+}
+
+export const RectangleButton = (props) => {
+    const{
+        text,
+        handlePress,
+        rightStyle,
+        topStyle,
+        width = 50,
+        height = 30,
+        color,
+        imageSize = 24
+    } = props
+
+  return (
+    <TouchableOpacity
+        style={{
+            width: width,
+            height: height,
+            backgroundColor: color,
+            position:"absolute",
+            borderRadius: SIZES.small,
+            alignItems:"center",
+            justifyContent:"center",
+            ...SHADOWS.light,
+            right:rightStyle,
+            top:topStyle
+        }}
+        onPress={handlePress}
+    >
+        <Text
+            style={{
+                fontFamily: FONTS.bold,
+                fontSize: SIZES.medium,
+                color: COLORS.white,
+            }}
+        >
+            {text}
+        </Text>
     </TouchableOpacity>
   )
 }
