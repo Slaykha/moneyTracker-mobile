@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
   import { StyleSheet, Text, View } from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
-  import AntDesign from 'react-native-vector-icons/AntDesign';
 import { COLORS, SIZES } from '../constants';
 
 const currencyOptions = [
@@ -21,21 +20,20 @@ const spendingOptions = [
     {label: "other", value: "7"},
 ];
 
-export const CurrencyDropdown = ({setSpendingCurrency, value, setValue}) => {
+export const CurrencyDropdown = ({setSpendingCurrency, value, setValue, defaultHolder = "Select Currency"}) => {
     const [isFocus, setIsFocus] = useState(false);
 
-    console.log()
     return (
       <View style={styles.container}>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
-          placeholderStyle={styles.placeholderStyle}
+          placeholderStyle={defaultHolder == "Select Currency" ? styles.placeholderStyle : styles.HolderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           data={currencyOptions}
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? "Select Currency" : "..."}
+          placeholder={!isFocus ? defaultHolder : "..."}
           value={value}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
@@ -49,21 +47,20 @@ export const CurrencyDropdown = ({setSpendingCurrency, value, setValue}) => {
     );
 };
 
-export const SpendingTypeDropdown = ({setSpendingType, value, setValue}) => {
+export const SpendingTypeDropdown = ({setSpendingType, value, setValue, defaultHolder = "Select Spending Type"}) => {
     const [isFocus, setIsFocus] = useState(false);
 
-    console.log()
     return (
       <View style={[styles.container, {top: 100}]}>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
-          placeholderStyle={styles.placeholderStyle}
+          placeholderStyle={defaultHolder == "Select Spending Type" ? styles.placeholderStyle : styles.HolderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           data={spendingOptions}
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? "Select Spending Type" : "..."}
+          placeholder={!isFocus ? defaultHolder : "..."}
           value={value}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
@@ -92,6 +89,10 @@ const styles = StyleSheet.create({
     placeholderStyle: {
       fontSize: 16,
       color: COLORS.gray
+    },
+    HolderStyle: {
+      fontSize: 16,
+      color: COLORS.white
     },
     selectedTextStyle: {
       fontSize: 16,

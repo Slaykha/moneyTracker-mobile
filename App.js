@@ -1,8 +1,9 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useFonts } from "expo-font";
-import AddSpending from "./screens/AddSpending";
 import Home from "./screens/Home";
+import Profile from "./screens/Profile";
+import Register_Login from "./screens/Register_Login";
 
 const Stack = createStackNavigator()
 
@@ -32,7 +33,8 @@ const App = () => {
         initialRouteName="Home"
       >
         <Stack.Screen name="Home" component={Home}/>
-        <Stack.Screen name="AddSpending" component={AddSpending}/>
+        <Stack.Screen name="Register_Login" component={Register_Login}/>
+        <Stack.Screen name="Profile" component={Profile}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

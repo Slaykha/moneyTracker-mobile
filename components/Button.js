@@ -10,7 +10,9 @@ export const CircleButton = (props) => {
         topStyle,
         size,
         color,
-        imageSize = 24
+        imageSize = 24,
+        imageColor,
+        ZIndex = 0
     } = props
 
   return (
@@ -25,11 +27,12 @@ export const CircleButton = (props) => {
             justifyContent:"center",
             ...SHADOWS.light,
             right:rightStyle,
-            top:topStyle
+            top:topStyle,
+            zIndex:ZIndex,
         }}
         onPress={handlePress}
     >
-        <Image source={imgUrl} resizeMode="contain" style={{width:imageSize, height:imageSize}}/>
+        <Image source={imgUrl} resizeMode="contain" style={{width:imageSize, height:imageSize, tintColor: imageColor}}/>
     </TouchableOpacity>
   )
 }
@@ -75,3 +78,47 @@ export const RectangleButton = (props) => {
   )
 }
 
+export const LineButton = (props) => {
+    const{
+        text,
+        handlePress,
+        rightStyle,
+        topStyle,
+        width = 50,
+        height = 25,
+        color,
+        imageSize = 24,
+        isFocus,
+        borderWidth = 0.5
+    } = props
+
+  return (
+    <TouchableOpacity
+        style={{
+            width: width,
+            height: height,
+            backgroundColor: color,
+            position:"absolute",
+            borderRadius: SIZES.small,
+            borderColor: isFocus ? COLORS.orange : COLORS.background,
+            borderBottomWidth: borderWidth,
+            alignItems:"center",
+            justifyContent:"center",
+            right:rightStyle,
+            top:topStyle
+        }}
+        onPress={handlePress}
+    >
+        <Text
+            style={{
+                fontFamily: FONTS.light,
+                fontSize: SIZES.medium,
+                color: COLORS.white,
+                alignItems:"center"
+            }}
+        >
+            {text}
+        </Text>
+    </TouchableOpacity>
+  )
+}

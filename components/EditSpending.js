@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Dimensions, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { assets, COLORS, SIZES } from '../constants'
 import { Animated } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -9,14 +9,22 @@ import { SPENDING_MODEL } from '../constants/model'
 
 const {width, height} = Dimensions.get("screen")
 
-const BottomSheet = (props) => {
+const EditSpending = (props) => {
     const{
         alignment, 
         close,
-        addSpending
+        spending,
+        editSpending,
+        deleteSpending
     } = props
+    
+    useEffect(() => {
+        setSpendingData(spending)
+    }, [spending])
+    
 
-    const [spendingData, setSpendingData] = useState(SPENDING_MODEL)
+    const [spendingData, setSpendingData] = useState(spending)
+
     const [currencyValue, setCurrencyValue] = useState(null);
     const [spendingTypeValue, setSpendingTypeValue] = useState(null);
 
@@ -59,10 +67,14 @@ const BottomSheet = (props) => {
         bottom: sheetIntrepolate
     }
 
-    const hadnleSubmit = () => {
-        setSpendingDate()
-        setSpendingId()
-        addSpending(spendingData) 
+    const handleEdit = () => {
+        editSpending(spendingData) 
+        hanleClose()
+    }
+
+    const handleDelete = () => {
+        deleteSpending(spendingData)
+        hanleClose()
     }
 
     const hanleClose = () => {
@@ -74,7 +86,7 @@ const BottomSheet = (props) => {
 
     return (
         <Animated.View style={[styles.container, sheetStyle]}>
-            <CircleButton handlePress={hanleClose} imgUrl={assets.close} rightStyle={"2%"} topStyle={"2%"} size={30} color={COLORS.orange} />
+            <CircleButton handlePress={hanleClose} imgUrl={assets.white_close} imageSize={12} rightStyle={"2%"} topStyle={"2%"} size={30} color={COLORS.red} />
             <View>
                 <TextInput 
                     style={styles.textInput} 
@@ -82,25 +94,34 @@ const BottomSheet = (props) => {
                     keyboardType={'numeric'} 
                     placeholderTextColor={COLORS.gray}
                     onChangeText={value => setSpendingMoney(value)}
-                    value={spendingData.money != 0 && spendingData.money}
+                    value={spendingData.money && spendingData.money.toString()}
                 />
-                <CurrencyDropdown setSpendingCurrency={setSpendingCurrency} value={currencyValue} setValue={setCurrencyValue}/>
-                <SpendingTypeDropdown setSpendingType={setSpendingType} value={spendingTypeValue} setValue={setSpendingTypeValue}/>
+                <CurrencyDropdown setSpendingCurrency={setSpendingCurrency} value={currencyValue} setValue={setCurrencyValue} defaultHolder={spendingData.currency && spendingData.currency}/>
+                <SpendingTypeDropdown setSpendingType={setSpendingType} value={spendingTypeValue} setValue={setSpendingTypeValue} defaultHolder={spendingData.spendingType && spendingData.spendingType}/>
                 <RectangleButton 
-                    handlePress={hadnleSubmit} 
-                    text={"Add Spending"} 
+                    handlePress={handleEdit} 
+                    text={"Update"} 
                     height={50}
-                    width={"80%"} 
-                    rightStyle={"10%"} 
+                    width={"39%"} 
+                    rightStyle={"51%"} 
                     topStyle={270} 
                     color={COLORS.orange} 
+                />
+                <RectangleButton 
+                    handlePress={handleDelete} 
+                    text={"Delete"} 
+                    height={50}
+                    width={"39%"} 
+                    rightStyle={"10%"} 
+                    topStyle={270} 
+                    color={COLORS.red} 
                 />
             </View>
         </Animated.View>
     )
 }
 
-export default BottomSheet
+export default EditSpending
 
 const styles = StyleSheet.create({
     container: {
@@ -112,17 +133,9 @@ const styles = StyleSheet.create({
         height: height / 2.4,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-
-    },
-    lineContainer:{
-        marginVertical: 10,
-        alignItems: "center",
-    },
-    line:{
-        width: 50,
-        borderTopWidth: 4,
-        borderTopColor: "black",
-        borderRadius: 20,
+        borderWidth: 0.5,
+        borderBottomWidth: 0,
+        borderColor: COLORS.orange
     },
     textInput: {
         height: 50,

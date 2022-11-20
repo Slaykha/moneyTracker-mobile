@@ -1,22 +1,38 @@
+import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { View, Text, Image, ImageBackground } from 'react-native'
 import { assets, COLORS, FONTS, SIZES } from '../constants'
 import { CURRENCY_VALUE } from '../constants/currencies'
+import { CircleButton } from './Button'
 import TotalSpending from './TotalSpending'
 
 const Header = ({data}) => {
+  const navigation = useNavigation()
 
   const [totalMoney, setTotalMoney] = useState(0)
-
-  const getTotalMoney = () => {
-    var tempTotal = 0 
-    data.map((spending) => tempTotal = tempTotal + (spending.money * CURRENCY_VALUE[spending.currency]))
-    setTotalMoney(tempTotal)
-  }
+  const [type, setType] = useState("Türk Lirası")
 
   useEffect(() => {
-    getTotalMoney()
+    getTotalMoney(type)
   }, [data])
+  
+  useEffect(() => {
+    getTotalMoney(type)
+  }, [type])
+
+  const getTotalMoney = (type) => {
+    var tempTotal = 0 
+    data.map((spending) => tempTotal = tempTotal + (spending.money * CURRENCY_VALUE[spending.currency]))
+    if(type === "Türk Lirası"){
+      setTotalMoney(tempTotal)
+    }else if(type === "Dolar"){
+      setTotalMoney(tempTotal / CURRENCY_VALUE["Dolar"])
+    }else if(type === "Euro"){
+      setTotalMoney(tempTotal / CURRENCY_VALUE["Euro"])
+    }else if(type === "Pound"){
+      setTotalMoney(tempTotal / CURRENCY_VALUE["Pound"])
+    }
+  }
   
   return (
     <ImageBackground
@@ -28,18 +44,6 @@ const Header = ({data}) => {
           padding: SIZES.font
         }}
       >
-        <View 
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems:"center"
-          }}
-        >
-          <View>
-
-          </View>
-        </View>
-
         <View
           style={{
             marginVertical: SIZES.font
@@ -49,12 +53,13 @@ const Header = ({data}) => {
             style={{
               fontFamily: FONTS.bold,
               fontSize: SIZES.large,
-              color: COLORS.white
+              color: COLORS.white,
             }}
           >
             Hello, Kadir
           </Text>
-          <TotalSpending totalMoney={totalMoney}/>
+          <CircleButton color={COLORS.white} topStyle={-5} rightStyle={5} size={45} imgUrl={assets.person01} imageSize={40} handlePress={() => navigation.navigate("Profile")} ZIndex={99} />
+          <TotalSpending totalMoney={totalMoney} setType={setType} type={type}/>
           
         </View>
       </View>

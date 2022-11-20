@@ -1,26 +1,44 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, FlatList, Animated } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CircleButton, FocusStatusBar, Header, Spendig } from '../components'
-import BottomSheet from '../components/BottomSheet'
+import AddSpending from '../components/AddSpending'
+import EditSpending from '../components/EditSpending'
 import {assets, COLORS, SpendingData} from "../constants"
 
 
 const Home = () => {
-
+  
   const [data, setData] = useState(SpendingData)
+  const [currentSpendingData, setcurrentSpendingData] = useState({})
 
   const addSpending = (spending) => {
-    console.log(spending)
     if(spending.money != 0 && spending.currency != "" && spending.SpendigType != "") setData([...data, spending]) 
     else  console.log("Hata!")
   }
 
-  const [alignment] = useState(new Animated.Value(0))
+  const editSpending = (spending) => {
+    if(spending.money != 0 && spending.currency != "" && spending.SpendigType != ""){
+      let temp = data
+      let index = data.map(item => item.id).indexOf(spending.id)
+      temp[index] = spending
+  
+      setData(temp) 
+    }
+    
+    else  console.log("Hata!") 
+  }
+
+  const deleteSpending = (spending) => {
+    setData(data.filter(item => item.id !== spending.id))
+  }
+
+  const [alignmentAddNewSpending] = useState(new Animated.Value(0))
+  const [alignmentEditSpending] = useState(new Animated.Value(0))
 
   const openAddNewSpendingSheet = () => {
-      Animated.timing(alignment, {
+      Animated.timing(alignmentAddNewSpending, {
           toValue: 1,
           duration: 500,
           useNativeDriver: false
@@ -28,13 +46,28 @@ const Home = () => {
   }
 
   const closeAddNewSpendingSheet = () => {
-    Animated.timing(alignment, {
+    Animated.timing(alignmentAddNewSpending, {
         toValue: 0,
         duration: 500,
         useNativeDriver: false
+    }).start() 
+  }
+
+  const openEditSpendingSheet = () => {
+    Animated.timing(alignmentEditSpending, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: false
     }).start()
-    
 }
+
+  const closeEditSpendingSheet = () => {
+    Animated.timing(alignmentEditSpending, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false
+    }).start() 
+  }
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -46,7 +79,7 @@ const Home = () => {
           <View style={{zIndex: 0}}>
             <FlatList 
               data={data}
-              renderItem={({item}) => <Spendig data={item}/>}
+              renderItem={({item}) => <Spendig data={item} open={openEditSpendingSheet} setSpendingData={setcurrentSpendingData}/>}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
               ListHeaderComponent={<Header data={data}/>}
@@ -62,9 +95,10 @@ const Home = () => {
           </View>
         </View>
       </View>
-      <CircleButton handlePress={openAddNewSpendingSheet} imgUrl={assets.add} topStyle={"90%"} rightStyle={25} size={50} color={COLORS.orange} imageSize={32}></CircleButton>
+      <CircleButton handlePress={openAddNewSpendingSheet} imgUrl={assets.add} topStyle={"90%"} rightStyle={25} size={50} color={COLORS.orange} imageSize={32} imageColor={COLORS.white}></CircleButton>
 
-      <BottomSheet alignment={alignment} close={closeAddNewSpendingSheet} addSpending={addSpending}/>
+      <AddSpending alignment={alignmentAddNewSpending} close={closeAddNewSpendingSheet} addSpending={addSpending}/>
+      <EditSpending alignment={alignmentEditSpending} close={closeEditSpendingSheet} spending={currentSpendingData} editSpending={editSpending} deleteSpending={deleteSpending}/>
     </SafeAreaView>
     </GestureHandlerRootView>
   )
