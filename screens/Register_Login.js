@@ -8,8 +8,6 @@ import Register from '../components/Register'
 import { assets, COLORS } from '../constants'
 
 const Register_Login = () => {
-  const navigation = useNavigation()
-
   const [isFocused, setIsFocused] = useState("Log In")
 
   return (

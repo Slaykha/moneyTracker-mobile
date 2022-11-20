@@ -22,7 +22,7 @@ export const CircleButton = (props) => {
             height: size,
             backgroundColor: color,
             position:"absolute",
-            borderRadius: SIZES.extraLarge,
+            borderRadius: 999,
             alignItems:"center",
             justifyContent:"center",
             ...SHADOWS.light,
